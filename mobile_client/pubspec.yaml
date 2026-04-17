@@ -1,0 +1,29 @@
+name: chatweb_mobile_user
+description: Flutter mobile client for the ChatWeb SpringBoot backend.
+publish_to: "none"
+version: 1.0.0+1
+
+environment:
+  sdk: ">=3.3.0 <4.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  # Material Design图标
+  cupertino_icons: ^1.0.8
+  # HTTP网络请求库
+  dio: ^5.8.0+1
+  # 图片选择器
+  image_picker: ^1.1.2
+  # 本地存储
+  shared_preferences: ^2.5.3
+  # WebSocket通信
+  web_socket_channel: ^3.0.3
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
+
+flutter:
+  uses-material-design: true

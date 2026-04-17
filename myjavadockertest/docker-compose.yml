@@ -1,0 +1,63 @@
+# docker-compose.yml
+version: '3.8'
+
+services:
+  # ==================== 数据库 ====================
+  mysql:
+    image: mysql:8
+    environment:
+      MYSQL_ROOT_PASSWORD: 123456
+      MYSQL_DATABASE: chatweb
+    ports:
+      - "3306:3306"           # 暴露给宿主机（方便本地调试）
+    volumes:
+      - mysql_data:/var/lib/mysql  # 数据持久化
+      - ./mysql/init:/docker-entrypoint-initdb.d  # 自动执行这里面的.sql文件（用于创库创表）
+    restart: unless-stopped
+    networks:
+      - chat-network
+
+  # ==================== 缓存 ====================
+  redis:
+    image: redis:alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    restart: unless-stopped
+    networks:
+      - chat-network
+
+  # ==================== 后端服务（多实例） ====================
+  backend:
+    build: ./backend              # 使用 backend/Dockerfile 构建
+    expose:
+      - "8090"                    # 只给内部网络用，不暴露到宿主机
+      - "8091"                    # WebSocket 端口
+    depends_on:
+      - mysql
+      - redis
+    deploy:
+      replicas: 3                 # ← 启动 3 个实例！
+    restart: unless-stopped
+    networks:
+      - chat-network
+
+  # ==================== 前端服务（Nginx） ====================
+  frontend:
+    build: ./frontend                  # 使用前端/Dockerfile 构建
+    ports:
+      - "8081:80"                # 用户访问入口
+    depends_on:
+      - backend
+    restart: unless-stopped
+    networks:
+      - chat-network
+
+networks:
+  chat-network:
+    driver: bridge
+
+volumes:
+  mysql_data:
+  redis_data:
