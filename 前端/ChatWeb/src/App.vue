@@ -57,6 +57,14 @@ export default {
         if (data.type === 'message') {
           // 收到消息就设置未读状态
           this.$store.commit('websocket/SET_UNREAD', true)
+          // 发送 ACK 确认
+          if (data.messageId) {
+            const socket = this.$store.state.websocket.socket
+            if (socket && socket.readyState === WebSocket.OPEN) {
+              socket.send(JSON.stringify({ type: 'ACK', messageId: data.messageId }))
+              console.log('【App.vue】发送消息确认 ACK:', data.messageId)
+            }
+          }
         } else if (data.type === 'session_deleted') {
           // 对方删除了会话，通知前端处理
           console.log('【App.vue】收到会话删除通知:', data.username)

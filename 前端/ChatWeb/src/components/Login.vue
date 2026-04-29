@@ -6,10 +6,9 @@
     <div class="auth-shell">
       <div class="auth-brand">
         <div class="brand-badge">ChatWeb · AI COMMERCE</div>
-        <h1>让客服、商品与 AI 形象都更有未来感</h1>
+        <h1>让购物更有未来感</h1>
         <p>
-          重新定义你的电商客服入口：明亮高级的品牌氛围、沉浸式登录注册、统一的产品视觉，
-          从进入系统的第一秒就更像一个完整产品。
+          融入AI和库,让购物更加明晰
         </p>
 
         <div class="brand-cards">
@@ -30,7 +29,7 @@
         <div class="panel-top">
           <div>
             <div class="panel-kicker">WELCOME BACK</div>
-            <h2>{{ disfiex === 0 ? '登录你的工作台' : '创建新的账户' }}</h2>
+            <h2>{{ disfiex === 0 ? '登录你的账户' : '创建新的账户' }}</h2>
           </div>
           <div class="switch-pill">
             <button :class="['switch-btn', { active: disfiex === 0 }]" @click="Signup">登录</button>
